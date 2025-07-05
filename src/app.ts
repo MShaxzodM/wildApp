@@ -1,6 +1,9 @@
-import knex, { migrate, seed } from "#postgres/knex.js";
-
+import { migrate, seed } from "#postgres/knex.js";
+import cron from "#cron.js";
+import { CronJob } from "cron";
 await migrate.latest();
 await seed.run();
-
-console.log("All migrations and seeds have been run");
+const job = new CronJob("0 * * * *", async () => {
+    await cron();
+});
+job.start();
